@@ -74,11 +74,13 @@ class Calculator {
             case '×':
                 computation = prev * current;
                 break;
-            case '÷':
-                if (current === 0) {
-                    console.log('Cannot divide by zero!');
-                    return;
-                }
+                case '÷':
+                    if (current === 0) {
+                        showMessage("Brozer, c'est impossible ce que tu me demandes là !");
+                        return;
+                    }
+                    computation = prev / current;
+                    break;
                 computation = prev / current;
                 break;
             case '%':
@@ -103,6 +105,36 @@ class Calculator {
             document.querySelector('.previous-operand').textContent = '';
         }
     }
+    
+}
+function showMessage(message) {
+    // Crée une div pour le message
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+
+    // Style de base
+    messageDiv.style.cssText = `
+        background-color: #444;
+        color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 1rem;
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+    `;
+
+    // Ajoute la div au conteneur
+    const container = document.getElementById('message-container');
+    container.appendChild(messageDiv);
+
+    // Supprime la div après 3 secondes
+    setTimeout(() => {
+        messageDiv.style.opacity = '0'; // Transition pour disparaître
+        setTimeout(() => messageDiv.remove(), 500); // Supprime après la transition
+    }, 3000);
 }
 
 // Instancie et initialise la calculatrice
@@ -111,6 +143,7 @@ calculator.clear();
 calculator.updateDisplay();
 
 // Ajoute les événements sur les boutons
+// Gestion des événements pour tous les boutons
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', () => {
         const type = button.dataset.type;
@@ -129,4 +162,9 @@ document.querySelectorAll('button').forEach(button => {
         }
         calculator.updateDisplay();
     });
+});
+
+// Gestionnaire pour le bouton spécial "🖩"
+document.querySelector('[data-type="special"]').addEventListener('click', () => {
+    showMessage("Tu crois vraiment que j'ai fait la calculatrice scientifique ?");
 });
